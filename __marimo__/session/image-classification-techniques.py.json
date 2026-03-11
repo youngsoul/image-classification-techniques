@@ -1,0 +1,405 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.20.4",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "1d0db38904205bec4d6f6f6a1f6cec3e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "e4b41928b2d0fe5a14c331d8f1820457",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"note-for-macos-for-sure\">NOTE:  For MacOS for sure</h1>\n<span class=\"paragraph\">One important tip for Python 3.13</span>\n<span class=\"paragraph\">Some CLIP dependencies (especially torch) can still be spotty with 3.13 depending on platform.</span>\n<span class=\"paragraph\">If you hit strange install errors, the most stable setup is:</span>\n<ul>\n<li>Python 3.11 or 3.12</li>\n<li>embetter[recommended]</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "b0f63a6b75dac0aa09921a060f2ed5a6",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"4-class-image-classification-comparing-different-classification-techniques\">4 Class Image Classification comparing different classification techniques</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "4ee38d56f0a350c5bd582c5ddb05774d",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">This notebook will look at the following techniques for performing image classification:</span>\n<ul>\n<li>Keras/Tensorflow</li>\n<li>CLIP Image Embeddings/Scikit-Learn</li>\n<li>Zero Shot Image Classification with CLIP Image and Text Embeddings</li>\n<li>Vision Language Models</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "52822c23fcdb2366230d3c7b8b9a0bc4",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">The impetus for this notebook started by taking the course, \"Deep Learning with Tensorflow &amp; Keras\" from opencv.org.</span>\n<span class=\"paragraph\"><a href=\"https://opencv.org/university/deep-learning-with-tensorflow-keras/?utm_source=lopcv&amp;utm_medium=menu\" rel=\"noopener noreferrer\" target=\"_blank\">https://opencv.org/university/deep-learning-with-tensorflow-keras/?utm_source=lopcv&amp;utm_medium=menu</a></span>\n<span class=\"paragraph\">One of the course assignments was to create a custom Keras CNN model to perform 4 animal image classification.  The animals were</span>\n<ul>\n<li>cow</li>\n<li>elephant</li>\n<li>horse</li>\n<li>spider</li>\n</ul>\n<span class=\"paragraph\">In the assignment you had to reach at least 80% accuracy to pass the assignment.</span>\n<span class=\"paragraph\">Since taking that class, embedding models and Vision Language Models have come onto the scene so I wanted to revist that assignment with the new techniques to see how they compared.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "9a1778f680c0edea226cf793b27101ae",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">This notebook will start with the 4 animals dataset that was presented in the course, and later in the notebook we will add cats and dogs to the dataset.</span>\n<span class=\"paragraph\">Each of the techniques will create a submission.csv just like we needed for the course, and the submission will be 'graded' locally against the true submission.  In the course you are never given the true submission values but you can easily derive this by creating your own from the images in the Test directory</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "30af557fff8bf1f5aac32be0b3a53705",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"keras-tensorflow\">Keras / Tensorflow</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "d62e7aaf5962bd2be52e9a57c71fd2db",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">I am not going to revist the actual Keras CNN model code but go over my results as the baseline to see how the other techniques compare.</span>\n<span class=\"paragraph\">Developing the Keras CNN model and training took hours to run.  Granted I should have used Google Colab or another cloud service instead of my Mac.  Regardless, developing the model architecture and training took almost a week of my time, and lots of local compute time.</span>\n<span class=\"paragraph\">After all of that, my best accuracy was <strong>0.88292</strong></span>\n<span class=\"paragraph\">The best overall accuracy was <strong>0.97560</strong></span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "6da8d078b529bbb7c6e4ea8a2bad31f7",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "ef32b40e264491d543827bcb9745a8cc",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "bd53149dd47a7d405d152b38f383b730",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "emfo",
+      "code_hash": "70508677b8cdd6d6646dd5080826492d",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"clip-contrastive-language-image-pretraining\">CLIP ( Contrastive Language-Image Pretraining)</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Hstk",
+      "code_hash": "221f57a38da10db543c2c6e3b1ba4d24",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"what-is-a-clip-encoder\">What is a CLIP Encoder?</h3>\n<span class=\"paragraph\">CLIP (Contrastive Language\u2013Image Pretraining) is a model architecture designed to connect images and natural language in a shared representation space. It was introduced by OpenAI in the paper <em>Learning Transferable Visual Models From Natural Language Supervision</em>.</span>\n<span class=\"paragraph\">For more detail here is a link to Medium article.</span>\n<span class=\"paragraph\"><a href=\"https://medium.com/data-science/simple-implementation-of-openai-clip-model-a-tutorial-ace6ff01d9f2\" rel=\"noopener noreferrer\" target=\"_blank\">https://medium.com/data-science/simple-implementation-of-openai-clip-model-a-tutorial-ace6ff01d9f2</a></span>\n<span class=\"paragraph\">CLIP converts images and text into vectors that encode semantic meaning so that related images and descriptions are located near each other in the same high-dimensional space.</span>\n<span class=\"paragraph\">Essentially, if you show CLIP and image of a dog and the word 'dog' it will know they go together.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "nWHF",
+      "code_hash": "bfe4fc6db08757a2f1b17154cfd60ab8",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"what-clip-does-high-level\">What CLIP Does (High-Level)</h3>\n<span class=\"paragraph\">CLIP learns to answer the question:</span>\n<span class=\"paragraph\">\u201cWhich text description best matches this image?\u201d</span>\n<span class=\"paragraph\">Instead of training a model for a single task (like classifying cats vs dogs), CLIP learns a general visual-language understanding.</span>\n<span class=\"paragraph\">It does this by training on millions of (image, caption) pairs from the internet.</span>\n<span class=\"paragraph\">Example training pair:</span>\n<span class=\"paragraph\">Image: photo of a golden retriever running in a park</span>\n<span class=\"paragraph\">Text: \"a dog running in grass\"</span>\n<span class=\"paragraph\">CLIP learns to associate them.\nThe result is a model that can:</span>\n<ul>\n<li>Recognize objects</li>\n<li>Understand visual scenes</li>\n<li>Match images to text descriptions</li>\n<li>Perform zero-shot classification (no task-specific training)</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "iLit",
+      "code_hash": "153324b84c47f21bcae1c918a527b7a5",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"the-core-idea-two-encoders\">The Core Idea: Two Encoders</h3>\n<span class=\"paragraph\">CLIP contains two neural networks:</span>\n<span class=\"paragraph\"><strong>Image Encoder</strong></span>\n<span class=\"paragraph\">Converts an image into a numeric vector.</span>\n<span class=\"paragraph\">Typical architectures:</span>\n<ul>\n<li>Vision Transformer (ViT)</li>\n<li>ResNet</li>\n</ul>\n<span class=\"paragraph\"><strong>Text Encoder</strong></span>\n<span class=\"paragraph\">Converts text into a numeric vector.</span>\n<span class=\"paragraph\">Typical architecture:</span>\n<span class=\"paragraph\">Transformer (similar to GPT/BERT style models)</span>\n<span class=\"paragraph\">Both encoders output vectors in the same vector space.</span>\n<div class=\"language-scdoc codehilite\"><pre><span></span><code>image \u2192 image_encoder \u2192 512 element vector/embedding\ntext  \u2192 text_encoder  \u2192 512 element vector/embedding\n</code></pre></div></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZHCJ",
+      "code_hash": "c0056e4ded7f9b8c9f1f3d311b8ae8f2",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"the-embedding\">The Embedding</h3>\n<span class=\"paragraph\">An embedding is simply a dense numeric vector representing semantic meaning.</span>\n<span class=\"paragraph\">Example:</span>\n<span class=\"paragraph\">image_embedding =\n[0.021, -0.433, 0.812, 0.155, ... 512 numbers total]</span>\n<span class=\"paragraph\">Typical CLIP embedding sizes:</span>\n<table>\n<thead>\n<tr>\n<th>Model</th>\n<th>Dimensions</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>ViT-B/32</td>\n<td>512</td>\n</tr>\n<tr>\n<td>ViT-L/14</td>\n<td>768</td>\n</tr>\n</tbody>\n</table>\n<ul>\n<li>Larger models up to 1024+</li>\n</ul>\n<span class=\"paragraph\">The model that we use in this notebook, is the ViT-B/32 producing a vector of 512 elemenets.</span>\n<span class=\"paragraph\">These vectors are L2 normalized so they lie on a unit hypersphere, meaning they are ready to be used by machine learning models that require features be normalized.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ROlb",
+      "code_hash": "c27ff72edfd46b7f6afe66ed545cec4f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"what-the-embedding-represents\">What the Embedding Represents</h3>\n<span class=\"paragraph\">The embedding represents semantic concepts extracted from the image or text.</span>\n<span class=\"paragraph\">If you had an image of a dog running in grass, instead of explicitly storing:</span>\n<ul>\n<li>dog = 1</li>\n<li>grass = 1</li>\n<li>running = 1</li>\n</ul>\n<span class=\"paragraph\">CLIP stores distributed meaning across the 512 dimensions.</span>\n<span class=\"paragraph\">Conceptually, imagine the vector space with the following:</span>\n<ul>\n<li>dimension 17 \u2192 \"animalness\"</li>\n<li>dimension 204 \u2192 \"outdoor scenes\"</li>\n<li>dimension 311 \u2192 \"motion\"</li>\n</ul>\n<span class=\"paragraph\">The above is just meant to be a conceptual example of what each dimension, or index, in the embedding might mean.  When using image models with higher dimensions you can get more semantic meaning about the image.</span>\n<span class=\"paragraph\">So the embedding might encode:</span>\n<span class=\"paragraph\">Image: dog running in grass</span>\n<span class=\"paragraph\">embedding = animal + outdoor + motion + mammal + pet</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "qnkX",
+      "code_hash": "5c61cdd1c5b3268278023d8321ea599f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"how-clip-learns-this-space\">How CLIP Learns This Space</h3>\n<span class=\"paragraph\">Training uses contrastive learning.</span>\n<span class=\"paragraph\">For a batch of N image/text pairs:</span>\n<ul>\n<li>(image1, text1)</li>\n<li>(image2, text2)</li>\n<li>(image3, text3)</li>\n</ul>\n<span class=\"paragraph\">...</span>\n<span class=\"paragraph\">CLIP learns:</span>\n<ul>\n<li>similarity(image1, text1) \u2192 HIGH</li>\n<li>similarity(image1, text2) \u2192 LOW</li>\n<li>similarity(image1, text3) \u2192 LOW</li>\n</ul>\n<span class=\"paragraph\">Mathematically this is done using cosine similarity:</span>\n<span class=\"paragraph\">similarity = dot(image_embedding, text_embedding)</span>\n<span class=\"paragraph\">Training objective:</span>\n<ul>\n<li>maximize similarity of correct pairs</li>\n<li>minimize similarity of incorrect pairs</li>\n</ul>\n<span class=\"paragraph\">Over millions of examples, the model organizes the embedding space so that:</span>\n<ul>\n<li>matching images + text \u2192 close together</li>\n<li>unrelated pairs \u2192 far apart</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TqIu",
+      "code_hash": "c637fd9414a71861576971d6b52b15d9",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"zero-shot-classification\">Zero-Shot Classification</h3>\n<span class=\"paragraph\">No training needed.</span>\n<span class=\"paragraph\">image_embedding = encode(image)</span>\n<span class=\"paragraph\">label1 = encode(\"a photo of a dog\")</span>\n<span class=\"paragraph\">label2 = encode(\"a photo of a car\")</span>\n<span class=\"paragraph\">label3 = encode(\"a photo of a bee\")</span>\n<span class=\"paragraph\">choose highest similarity</span>\n<span class=\"paragraph\">CLIP can classify without ever seeing the dataset beforehand.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Vxnm",
+      "code_hash": "2aa69845ad64fd8ec89133e104d1e0ab",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"why-this-is-useful-in-machine-learning-pipelines\">Why This Is Useful in Machine Learning Pipelines</h3>\n<span class=\"paragraph\">CLIP embeddings can be used as general-purpose features.</span>\n<span class=\"paragraph\">Example workflow:</span>\n<div class=\"language-text codehilite\"><pre><span></span><code>image\n  \u2193\nCLIP encoder\n  \u2193\nembedding vector\n  \u2193\nscikit-learn model\n  \u2193\nclassification / clustering / anomaly detection\n</code></pre></div></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "DnEU",
+      "code_hash": "fd013891a13c1ee45bfae75fc9dc9df5",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"clip-embeddings-and-scikit-learn\">CLIP Embeddings and Scikit-Learn</h2>\n<span class=\"paragraph\">This section will cover the machine learning pipeline described above.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ulZA",
+      "code_hash": "670f8d24cb053d498358c4328cd944fa",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"embetter-python-package\">Embetter Python Package</h3>\n<span class=\"paragraph\">This section will use the Python package called, embetter.  You can get more information at the github repo.</span>\n<span class=\"paragraph\"><a href=\"https://github.com/koaning/embetter\" rel=\"noopener noreferrer\" target=\"_blank\">https://github.com/koaning/embetter</a></span>\n<span class=\"paragraph\">This python package makes integrating CLIP encodings and embeddings into the Scikit-Learn machine learning pipeline.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ecfG",
+      "code_hash": "f5c1629a419823077502ca69485fffe1",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Pvdt",
+      "code_hash": "a6ded62148b9a0a98b6265d023e1a7c3",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<pre class='text-xs'>&#x27;/Users/patrickryan/Development/machinelearning/image-classification-techniques/dataset&#x27;</pre>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZBYS",
+      "code_hash": "a26ee1f39f8dcf01b486e73552c465b7",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "In order to use ClipEncoder you'll need to install via;\n\npip install embetter[sentence-tfm]\n\n",
+          "traceback": []
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/var/folders/5j/fq5gjfyx6r78b749nx0sg9040000gn/T/marimo_12061/__marimo__cell_Dyvd_.py&quot;</span>, line <span class=\"m\">2</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"n\">ClipEncoder</span><span class=\"p\">()</span>\n  File <span class=\"nb\">&quot;/Users/patrickryan/Development/machinelearning/image-classification-techniques/.venv/lib/python3.12/site-packages/embetter/error.py&quot;</span>, line <span class=\"m\">21</span>, in <span class=\"n\">__call__</span>\n<span class=\"w\">    </span><span class=\"k\">raise</span> <span class=\"ne\">ModuleNotFoundError</span><span class=\"p\">(</span><span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">msg</span><span class=\"p\">)</span>\n<span class=\"gr\">ModuleNotFoundError</span>: <span class=\"n\">In order to use ClipEncoder you&#39;ll need to install via;</span>\n\n<span class=\"x\">pip install embetter[sentence-tfm]</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    },
+    {
+      "id": "aLJB",
+      "code_hash": "37ece75746ea5a78e9cafa6496af63cf",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Create a dataframe that includes the filepath to the images and the target label derived from the folder name.  The filepath will be used by embetter, to read the images and create the embeddings.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "nHfw",
+      "code_hash": "51804cd0663923eb76b5d93a205e854a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "xXTn",
+      "code_hash": "854874152b00e1d6e3bb0e3464c61a36",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "AjVT",
+      "code_hash": "8f9f4ce02dcb97d4a170ef5d95cfe82d",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='xXTn-0' random-id='d8c41f41-07ab-ec8d-26d5-e046fc599483'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;&#92;&quot;:2894,&#92;&quot;filepath&#92;&quot;:&#92;&quot;/Users/patrickryan/Development/machinelearning/image-classification-techniques/dataset/Train/horse/7353267.jpg&#92;&quot;,&#92;&quot;target&#92;&quot;:&#92;&quot;horse&#92;&quot;},{&#92;&quot;&#92;&quot;:2080,&#92;&quot;filepath&#92;&quot;:&#92;&quot;/Users/patrickryan/Development/machinelearning/image-classification-techniques/dataset/Train/horse/9636419.jpg&#92;&quot;,&#92;&quot;target&#92;&quot;:&#92;&quot;horse&#92;&quot;},{&#92;&quot;&#92;&quot;:1927,&#92;&quot;filepath&#92;&quot;:&#92;&quot;/Users/patrickryan/Development/machinelearning/image-classification-techniques/dataset/Train/elephant/2280557.jpg&#92;&quot;,&#92;&quot;target&#92;&quot;:&#92;&quot;elephant&#92;&quot;},{&#92;&quot;&#92;&quot;:235,&#92;&quot;filepath&#92;&quot;:&#92;&quot;/Users/patrickryan/Development/machinelearning/image-classification-techniques/dataset/Train/cow/1992965.jpg&#92;&quot;,&#92;&quot;target&#92;&quot;:&#92;&quot;cow&#92;&quot;},{&#92;&quot;&#92;&quot;:980,&#92;&quot;filepath&#92;&quot;:&#92;&quot;/Users/patrickryan/Development/machinelearning/image-classification-techniques/dataset/Train/cow/4539006.jpg&#92;&quot;,&#92;&quot;target&#92;&quot;:&#92;&quot;cow&#92;&quot;},{&#92;&quot;&#92;&quot;:2308,&#92;&quot;filepath&#92;&quot;:&#92;&quot;/Users/patrickryan/Development/machinelearning/image-classification-techniques/dataset/Train/horse/9461808.jpg&#92;&quot;,&#92;&quot;target&#92;&quot;:&#92;&quot;horse&#92;&quot;},{&#92;&quot;&#92;&quot;:325,&#92;&quot;filepath&#92;&quot;:&#92;&quot;/Users/patrickryan/Development/machinelearning/image-classification-techniques/dataset/Train/cow/4669182.jpg&#92;&quot;,&#92;&quot;target&#92;&quot;:&#92;&quot;cow&#92;&quot;},{&#92;&quot;&#92;&quot;:47,&#92;&quot;filepath&#92;&quot;:&#92;&quot;/Users/patrickryan/Development/machinelearning/image-classification-techniques/dataset/Train/cow/8655732.jpg&#92;&quot;,&#92;&quot;target&#92;&quot;:&#92;&quot;cow&#92;&quot;},{&#92;&quot;&#92;&quot;:1741,&#92;&quot;filepath&#92;&quot;:&#92;&quot;/Users/patrickryan/Development/machinelearning/image-classification-techniques/dataset/Train/elephant/2244458.jpg&#92;&quot;,&#92;&quot;target&#92;&quot;:&#92;&quot;elephant&#92;&quot;},{&#92;&quot;&#92;&quot;:3551,&#92;&quot;filepath&#92;&quot;:&#92;&quot;/Users/patrickryan/Development/machinelearning/image-classification-techniques/dataset/Train/spider/5876764.jpg&#92;&quot;,&#92;&quot;target&#92;&quot;:&#92;&quot;spider&#92;&quot;}]&quot;' data-total-rows='24' data-total-columns='2' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;filepath&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;target&quot;,[&quot;string&quot;,&quot;str&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='true' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[[&quot;&quot;,[&quot;integer&quot;,&quot;int64&quot;]]]' data-has-stable-row-id='false' data-lazy='false' data-preload='false' data-download-file-name='&quot;df&quot;'></marimo-table></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "pHFh",
+      "code_hash": "deb2f84d78206306ff1c1c4f17996562",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Create a Scikit-Learn pipeline, using embetter to read the filepath column from the training dataframe, loading the image and then running each image through the ClipEncoder to generate embeddings for each image.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "NCOB",
+      "code_hash": "d64b3af467909f774420be82d7eca550",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "An ancestor raised an exception (ModuleNotFoundError): ",
+          "traceback": []
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/var/folders/5j/fq5gjfyx6r78b749nx0sg9040000gn/T/marimo_12061/__marimo__cell_pHFh_.py&quot;</span>, line <span class=\"m\">5</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"n\">ClipEncoder</span><span class=\"p\">(),</span>\n<span class=\"w\">    </span><span class=\"pm\">^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/Users/patrickryan/Development/machinelearning/image-classification-techniques/.venv/lib/python3.12/site-packages/embetter/error.py&quot;</span>, line <span class=\"m\">21</span>, in <span class=\"n\">__call__</span>\n<span class=\"w\">    </span><span class=\"k\">raise</span> <span class=\"ne\">ModuleNotFoundError</span><span class=\"p\">(</span><span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">msg</span><span class=\"p\">)</span>\n<span class=\"gr\">ModuleNotFoundError</span>: <span class=\"n\">In order to use ClipEncoder you&#39;ll need to install via;</span>\n\n<span class=\"x\">pip install embetter[sentence-tfm]</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    }
+  ]
+}

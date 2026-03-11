@@ -1,0 +1,12 @@
+[project]
+name = "image-classification-techniques"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "embetter[sbert]>=0.7.0",
+    "marimo[recommended]>=0.20.4",
+    "pillow>=12.1.1",
+    "scikit-learn>=1.8.0",
+    "umap-learn>=0.5.11",
+]
