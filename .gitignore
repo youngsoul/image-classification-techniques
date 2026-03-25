@@ -7,7 +7,6 @@ dataset/Test
 dataset/Valid
 dataset/Train/cow
 dataset/Train/elephant
-dataset/Train/horse
 
 # User-specific stuff
 .idea/**/workspace.xml
