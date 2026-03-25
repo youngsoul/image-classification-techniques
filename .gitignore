@@ -3,7 +3,11 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 .idea
 cats_dogs_dataset
-dataset
+dataset/Test
+dataset/Valid
+dataset/Train/cow
+dataset/Train/elephant
+dataset/Train/horse
 
 # User-specific stuff
 .idea/**/workspace.xml
