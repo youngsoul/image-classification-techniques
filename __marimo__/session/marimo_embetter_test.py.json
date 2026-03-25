@@ -2,13 +2,20 @@
   "version": "1",
   "metadata": {
     "marimo_version": "0.20.4",
-    "script_metadata_hash": null
+    "script_metadata_hash": "beb1060e8a95ec16b5118680f72979f8"
   },
   "cells": [
     {
       "id": "Hbol",
       "code_hash": "1d0db38904205bec4d6f6f6a1f6cec3e",
-      "outputs": [],
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
       "console": []
     },
     {
@@ -39,7 +46,7 @@
         {
           "type": "stream",
           "name": "stderr",
-          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/var/folders/5j/fq5gjfyx6r78b749nx0sg9040000gn/T/marimo_14395/__marimo__cell_vblA_.py&quot;</span>, line <span class=\"m\">1</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"n\">ClipEncoder</span><span class=\"p\">()</span>\n  File <span class=\"nb\">&quot;/Users/patrickryan/Development/machinelearning/image-classification-techniques/.venv/lib/python3.11/site-packages/embetter/error.py&quot;</span>, line <span class=\"m\">21</span>, in <span class=\"n\">__call__</span>\n<span class=\"w\">    </span><span class=\"k\">raise</span> <span class=\"ne\">ModuleNotFoundError</span><span class=\"p\">(</span><span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">msg</span><span class=\"p\">)</span>\n<span class=\"gr\">ModuleNotFoundError</span>: <span class=\"n\">In order to use ClipEncoder you&#39;ll need to install via;</span>\n\n<span class=\"x\">pip install embetter[sentence-tfm]</span>\n</pre></div>\n</span>",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/var/folders/5j/fq5gjfyx6r78b749nx0sg9040000gn/T/marimo_20640/__marimo__cell_vblA_.py&quot;</span>, line <span class=\"m\">1</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"n\">ClipEncoder</span><span class=\"p\">()</span>\n  File <span class=\"nb\">&quot;/Users/patrickryan/Development/machinelearning/image-classification-techniques/.venv/lib/python3.11/site-packages/embetter/error.py&quot;</span>, line <span class=\"m\">21</span>, in <span class=\"n\">__call__</span>\n<span class=\"w\">    </span><span class=\"k\">raise</span> <span class=\"ne\">ModuleNotFoundError</span><span class=\"p\">(</span><span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">msg</span><span class=\"p\">)</span>\n<span class=\"gr\">ModuleNotFoundError</span>: <span class=\"n\">In order to use ClipEncoder you&#39;ll need to install via;</span>\n\n<span class=\"x\">pip install embetter[sentence-tfm]</span>\n</pre></div>\n</span>",
           "mimetype": "application/vnd.marimo+traceback"
         }
       ]

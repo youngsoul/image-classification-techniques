@@ -2,10 +2,12 @@
 name = "image-classification-techniques"
 version = "0.1.0"
 description = "Add your description here"
-requires-python = ">=3.11,<3.12"
+requires-python = ">=3.13,<3.14"
 dependencies = [
-    "embetter[sbert]>=0.7.0",
-    "marimo[recommended]>=0.20.4",
+    "embetter[sbert]>=0.7.0,<0.8.0",
+    "jupyter>=1.1.1",
+    "marimo[recommended]==0.21.1",
+    "ollama>=0.6.1",
     "pillow>=12.1.1",
     "scikit-learn>=1.8.0",
     "umap-learn>=0.5.11",

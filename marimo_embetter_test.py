@@ -1,3 +1,13 @@
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#         "embetter[sbert]>=0.7.0",
+#        "marimo[recommended]>=0.20.4",
+#        "pillow>=12.1.1",
+#        "scikit-learn>=1.8.0",
+#        "umap-learn>=0.5.11",
+# ]
+# ///
 import marimo
 
 __generated_with = "0.20.4"
