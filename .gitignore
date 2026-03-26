@@ -3,7 +3,14 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 .idea
 cats_dogs_dataset
-dataset/Test
+dataset/Test/2*.jpg
+dataset/Test/3*.jpg
+dataset/Test/4*.jpg
+dataset/Test/5*.jpg
+dataset/Test/6*.jpg
+dataset/Test/7*.jpg
+dataset/Test/8*.jpg
+
 
 
 
