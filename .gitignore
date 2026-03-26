@@ -5,7 +5,6 @@
 cats_dogs_dataset
 dataset/Test
 dataset/Valid
-dataset/Train/cow
 
 # User-specific stuff
 .idea/**/workspace.xml
