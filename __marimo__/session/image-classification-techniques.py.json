@@ -32,6 +32,19 @@
       "console": []
     },
     {
+      "id": "Ymnr",
+      "code_hash": "8e16f849817da92a36faf04a40f39475",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"tldr-summary\">TL;DR Summary</h2>\n<span class=\"paragraph\">Comparing 4 techniques for 4 animal image classification</span>\n<ul>\n<li>\n<span class=\"paragraph\">Keras/Tensorflow</span>\n<ul>\n<li>My personal best accuracy was 0.88292.  The best course accuracy was 0.97560.</li>\n</ul>\n</li>\n<li>\n<span class=\"paragraph\">CLIP Image Embeddings/Scikit-Learn</span>\n<div class=\"language-text highlight\"><pre><span></span><code>- Accuracy: 0.9963\n</code></pre></div>\n</li>\n<li>\n<span class=\"paragraph\">Zero Shot Image Classification with CLIP Image and Text Embeddings</span>\n<ul>\n<li>Accuracy: 0.9963</li>\n</ul>\n</li>\n<li>\n<span class=\"paragraph\">Vision Language Models</span>\n<ul>\n<li>Accuracy: 1.000</li>\n</ul>\n</li>\n</ul>\n<span class=\"paragraph\">Back in the day when CNN models were primarily used for image classification, it took significant time and compute resources.  The Keras CNN models also performed the worst compared to current techniques.</span>\n<span class=\"paragraph\">Using CLIP embeddings either with Scikit-Learn or as Zero-Shot classifier performed very well and were fast to build, train and execute.  </span>\n<span class=\"paragraph\">The best accuracy was from using Vision Language Models.  The drawback to this approach is the speed to classifiy all of the test submission images.  This step is very compute dependent. </span>\n<span class=\"paragraph\">If accuracy is the key metric, and speed of inference is not a factor then using VMLs is the way to go.</span>\n<span class=\"paragraph\">If speed of inference is the key metric, and you can live with less than perfect performance either Scikit-Learn or Zero-Shot is the way to go.  </span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
       "id": "MJUe",
       "code_hash": "cb8acc521a9f56cc9ba3b97ccc6c881c",
       "outputs": [
@@ -757,12 +770,12 @@
     },
     {
       "id": "CLip",
-      "code_hash": "b24a4180301791d26fe69e6cb54aaf31",
+      "code_hash": "a2310d6ab5871410a03957ec932c9ec3",
       "outputs": [
         {
           "type": "data",
           "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"create-a-scikit-learn-machine-learning-pipeline\">Create a Scikit-Learn Machine Learning Pipeline</h3>\n<span class=\"paragraph\">In this section we will create a scikit-learn machine learning pipeline to train a model on the Train image embeddings and then use the Valid image embeddings to validate the models performance.</span></span>"
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"create-a-scikit-learn-machine-learning-pipeline\">Create a Scikit-Learn Machine Learning Pipeline</h3>\n<span class=\"paragraph\">In this section we will create a scikit-learn machine learning pipeline to train a model on the Train image embeddings and then use the Valid image embeddings to validate the models performance.</span>\n<span class=\"paragraph\">The first step is to create a Scikit-Learn Pipeline using Embetter classes to read the training images from the filesystem, and CLIP encode each image.  That pipeline looks like the following:</span>\n<div class=\"language-python codehilite\"><pre><span></span><code><span class=\"n\">training_image_embedding_pipeline</span> <span class=\"o\">=</span> <span class=\"n\">make_pipeline</span><span class=\"p\">(</span>\n       <span class=\"n\">ColumnGrabber</span><span class=\"p\">(</span><span class=\"s2\">&quot;filepath&quot;</span><span class=\"p\">),</span>\n      <span class=\"n\">ImageLoader</span><span class=\"p\">(</span><span class=\"n\">convert</span><span class=\"o\">=</span><span class=\"s2\">&quot;RGB&quot;</span><span class=\"p\">),</span>\n      <span class=\"n\">ClipEncoder</span><span class=\"p\">(),</span>\n    <span class=\"p\">)</span>\n</code></pre></div>\n<span class=\"paragraph\">We are going to read all of the file paths to the training images into a dataframe in a column called, 'filepath', and another column called, 'target' which will have the image label, e.g. 'cow', 'elephant', 'horse', 'spider'.  </span>\n<span class=\"paragraph\">The filepath will be sent to the ImageLoader which will load the image from the filesystem and then send that image to the ClipEncoder.  This will produce a 512 element vector for each image.</span>\n<span class=\"paragraph\">To create a dataset suitable for Scikit-Learn</span>\n<div class=\"language-python codehilite\"><pre><span></span><code><span class=\"n\">training_X</span> <span class=\"o\">=</span> <span class=\"n\">image_embedding_pipeline</span><span class=\"o\">.</span><span class=\"n\">fit_transform</span><span class=\"p\">(</span><span class=\"n\">training_files_df</span><span class=\"p\">)</span>\n<span class=\"n\">training_y</span> <span class=\"o\">=</span> <span class=\"n\">training_files_df</span><span class=\"p\">[</span><span class=\"s1\">&#39;target&#39;</span><span class=\"p\">]</span>\n</code></pre></div>\n<span class=\"paragraph\">We now have a dataset suitable to use with a Scikit-Learn LogisticRegression model to train a model.  This model will then be used to Validate the accuracy of the model performance and then used to create a Test submission.</span></span>"
           }
         }
       ],
@@ -770,12 +783,12 @@
     },
     {
       "id": "YECM",
-      "code_hash": "cdca2536b7c973a48e6f3ddfd6d75aa3",
+      "code_hash": "0c2136cde464b4d1de9e9d3c86c68715",
       "outputs": [
         {
           "type": "data",
           "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h4 id=\"logisticregression-model-training\">LogisticRegression Model Training</h4>\n<span class=\"paragraph\">This section will demonstrate how to go from Images to a trained LogisticRegression classification model.</span>\n<span class=\"paragraph\">The code cells in this section are repeats of some previous cells in an effort to better co-locate some of the concepts</span></span>"
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h4 id=\"logisticregression-model-training\">LogisticRegression Model Training</h4>\n<span class=\"paragraph\">This section will demonstrate how to go from Images to a trained LogisticRegression classification model.</span></span>"
           }
         }
       ],
@@ -1267,14 +1280,7 @@
     {
       "id": "Ynfw",
       "code_hash": null,
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/plain": ""
-          }
-        }
-      ],
+      "outputs": [],
       "console": []
     },
     {
@@ -1620,14 +1626,7 @@
     {
       "id": "NBGo",
       "code_hash": null,
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/plain": ""
-          }
-        }
-      ],
+      "outputs": [],
       "console": []
     }
   ]

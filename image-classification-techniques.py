@@ -52,6 +52,39 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
+    ## TL;DR Summary
+
+    Comparing 4 techniques for 4 animal image classification
+
+    * Keras/Tensorflow
+      - My personal best accuracy was 0.88292.  The best course accuracy was 0.97560.
+
+
+    * CLIP Image Embeddings/Scikit-Learn
+        - Accuracy: 0.9963
+
+    * Zero Shot Image Classification with CLIP Image and Text Embeddings
+      - Accuracy: 0.9963
+
+    * Vision Language Models
+      - Accuracy: 1.000
+
+    Back in the day when CNN models were primarily used for image classification, it took significant time and compute resources.  The Keras CNN models also performed the worst compared to current techniques.
+
+    Using CLIP embeddings either with Scikit-Learn or as Zero-Shot classifier performed very well and were fast to build, train and execute.
+
+    The best accuracy was from using Vision Language Models.  The drawback to this approach is the speed to classifiy all of the test submission images.  This step is very compute dependent.
+
+    If accuracy is the key metric, and speed of inference is not a factor then using VMLs is the way to go.
+
+    If speed of inference is the key metric, and you can live with less than perfect performance either Scikit-Learn or Zero-Shot is the way to go.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
     # 4 Class Image Classification comparing different classification techniques
     """)
     return
@@ -812,6 +845,31 @@ def _():
     ### Create a Scikit-Learn Machine Learning Pipeline
 
     In this section we will create a scikit-learn machine learning pipeline to train a model on the Train image embeddings and then use the Valid image embeddings to validate the models performance.
+
+
+    The first step is to create a Scikit-Learn Pipeline using Embetter classes to read the training images from the filesystem, and CLIP encode each image.  That pipeline looks like the following:
+
+
+    ```python
+    training_image_embedding_pipeline = make_pipeline(
+           ColumnGrabber("filepath"),
+          ImageLoader(convert="RGB"),
+          ClipEncoder(),
+        )
+    ```
+
+    We are going to read all of the file paths to the training images into a dataframe in a column called, 'filepath', and another column called, 'target' which will have the image label, e.g. 'cow', 'elephant', 'horse', 'spider'.
+
+    The filepath will be sent to the ImageLoader which will load the image from the filesystem and then send that image to the ClipEncoder.  This will produce a 512 element vector for each image.
+
+    To create a dataset suitable for Scikit-Learn
+
+    ```python
+    training_X = image_embedding_pipeline.fit_transform(training_files_df)
+    training_y = training_files_df['target']
+    ```
+
+    We now have a dataset suitable to use with a Scikit-Learn LogisticRegression model to train a model.  This model will then be used to Validate the accuracy of the model performance and then used to create a Test submission.
     """)
     return
 
@@ -822,8 +880,6 @@ def _():
     #### LogisticRegression Model Training
 
     This section will demonstrate how to go from Images to a trained LogisticRegression classification model.
-
-    The code cells in this section are repeats of some previous cells in an effort to better co-locate some of the concepts
     """)
     return
 
@@ -908,7 +964,7 @@ def _(create_filepaths_df, lr_model):
 
     # create pipeline to read the filepath column, load the image, and encode the image
     validation_image_embedding_pipeline = make_pipeline(
-       ColumnGrabber("filepath"),
+      ColumnGrabber("filepath"),
       ImageLoader(convert="RGB"),
       ClipEncoder(),
     )
@@ -944,8 +1000,8 @@ def _(create_filepaths_df):
 
         image_embedding_pipeline = make_pipeline(
            ColumnGrabber("filepath"),
-          ImageLoader(convert="RGB"),
-          ClipEncoder(),
+           ImageLoader(convert="RGB"),
+           ClipEncoder(),
         )
 
         test_X = image_embedding_pipeline.fit_transform(test_files_df)
@@ -1424,7 +1480,6 @@ def _(grade_zero_shot_submission, grade_zero_shot_submission_btn):
 def _():
     display_incorrect_zero_shot_btn = mo.ui.run_button(label="Display Incorrect Zero Shot Predictions")
     display_incorrect_zero_shot_btn
-
     return (display_incorrect_zero_shot_btn,)
 
 
@@ -1456,7 +1511,6 @@ def _():
 def _():
     # Text prompt to send with the image
     prompt_text = "What animal is in this image?  You must pick from cow, horse, spider, elephant and you can only return that single animal name.  Even if the picture shows a different animal, you have to pick the best match."
-
     return (prompt_text,)
 
 
@@ -1507,7 +1561,6 @@ def _():
 def _():
     start_vlm_btn = mo.ui.run_button(label="Start sending images to QWEN3 VLM")
     start_vlm_btn
-
     return (start_vlm_btn,)
 
 
@@ -1518,9 +1571,9 @@ def _(get_animal_from_image, prompt_text, start_vlm_btn, write):
     if not Path("./vlm_test_submission.csv").exists:
         # Default to a directory if not provided as an argument
         directory_to_process = './dataset/Test'
-    
+
         results = {}
-    
+
         if not os.path.isdir(directory_to_process):
             print(f"Error: Directory '{directory_to_process}' does not exist.")
         else:
@@ -1535,7 +1588,7 @@ def _(get_animal_from_image, prompt_text, start_vlm_btn, write):
                     if filename.lower().endswith(('.jpg', '.jpeg', '.png', '.webp')):
                         result = get_animal_from_image(file_path, prompt_text)
                         results[filename] = result
-        
+
             print("\Completed sending all images to VLM")
             # print(results)
             # Create the submission.csv file
@@ -1556,7 +1609,6 @@ def _(get_animal_from_image, prompt_text, start_vlm_btn, write):
 
     else:
         print("vlm_test_submission.csv already exists.  Skipping to avoid lengthy cell execution")
-
     return
 
 
