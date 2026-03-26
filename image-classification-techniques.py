@@ -5,6 +5,7 @@
 #   "jupyter>=1.1.1",
 #   "marimo[recommended]>=0.21.0",
 #   "pillow>=12.1.1",
+#   "ollama>=0.6.1",
 #   "scikit-learn>=1.8.0",
 #   "umap-learn>=0.5.11",
 # ]
@@ -45,39 +46,6 @@ def _():
     # NOTE:  Embetter requires install of Jupyter when running in marimo notebook.
 
     I do not know why yet, but to get the embetter python package to run in a marimo notebook, I had to install jupyter.
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _():
-    mo.md(r"""
-    ## TL;DR Summary
-
-    Comparing 4 techniques for 4 animal image classification
-
-    * Keras/Tensorflow
-      - My personal best accuracy was 0.88292.  The best course accuracy was 0.97560.
-
-
-    * CLIP Image Embeddings/Scikit-Learn
-        - Accuracy: 0.9963
-
-    * Zero Shot Image Classification with CLIP Image and Text Embeddings
-      - Accuracy: 0.9963
-
-    * Vision Language Models
-      - Accuracy: 1.000
-
-    Back in the day when CNN models were primarily used for image classification, it took significant time and compute resources.  The Keras CNN models also performed the worst compared to current techniques.
-
-    Using CLIP embeddings either with Scikit-Learn or as Zero-Shot classifier performed very well and were fast to build, train and execute.
-
-    The best accuracy was from using Vision Language Models.  The drawback to this approach is the speed to classifiy all of the test submission images.  This step is very compute dependent.
-
-    If accuracy is the key metric, and speed of inference is not a factor then using VMLs is the way to go.
-
-    If speed of inference is the key metric, and you can live with less than perfect performance either Scikit-Learn or Zero-Shot is the way to go.
     """)
     return
 
@@ -130,6 +98,38 @@ def _():
     This notebook will start with the 4 animals dataset that was presented in the course, and later in the notebook we will add cats and dogs to the dataset.
 
     Each of the techniques will create a submission.csv just like we needed for the course, and the submission will be 'graded' locally against the true submission.  In the course you are never given the true submission values but you can easily derive this by creating your own from the images in the Test directory
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ## TL;DR Summary
+
+    Comparing 4 techniques for 4 animal image classification
+
+    * Keras/Tensorflow
+      - My personal best accuracy was 0.88292.  The best course accuracy was 0.97560.
+
+    * CLIP Image Embeddings/Scikit-Learn
+        - Accuracy: 0.9963
+
+    * Zero Shot Image Classification with CLIP Image and Text Embeddings
+      - Accuracy: 0.9963
+
+    * Vision Language Models
+      - Accuracy: 1.000
+
+    Back in the day when CNN models were primarily used for image classification, it took significant time and compute resources.  As will be seen in this notebook, the Keras CNN models also performed the worst compared to current techniques.  For this narrow use case, it does appear that traditional deep learning/CNN approaches are a thing of the past.
+
+    Using CLIP embeddings either with Scikit-Learn or as Zero-Shot classifier performed very well and were fast to build, train and execute.
+
+    The best accuracy was from using Vision Language Models.  The drawback to this approach is the speed to classifiy all of the test submission images.  This step is very compute dependent.
+
+    If accuracy is the key metric, and speed of inference is not a factor then using VMLs is the way to go.
+
+    If speed of inference is the key metric, and you can live with less than perfect performance either Scikit-Learn or Zero-Shot is the way to go.
     """)
     return
 
@@ -428,6 +428,12 @@ def _():
     classification
     ```
     """)
+    return
+
+
+@app.cell
+def _():
+    mo.stop(True, mo.md("**Execution artifically stopped here so we can run each cell manually.**"))
     return
 
 
