@@ -1,6 +1,3 @@
-# Different techniques for Image Classification
-
-
 ---
 title: Image Classification Techniques
 marimo-version: 0.21.1
